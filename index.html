@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Word Guessing Game</title>
+</head>
+<body>
+  <div class="game">
+    <h1 class="game__title">Word Guessing Game</h1>
+    <p class="game__guess-counter">0 / 10</p>
+    <p class="game__word-display"></p>
+    <input class="game__letter-input" type="text" maxlength="1" pattern="[a-zA-Z]">
+    <p class="game__timer">60</p>
+    <ul class="game__guess-history"></ul>
+    <button class="game__new-game-btn">Start New Game</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

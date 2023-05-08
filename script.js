@@ -149,13 +149,13 @@ const GameController = (() => {
 
       const numLettersToHide = Math.floor(Math.random() * (model.word.length - 1)) + 1;
 
-      for (let i = 0; i < model.word.length; i++) {
-        if (i < numLettersToHide) {
-        model.wordDisplay += "_";
-        } else {
-        model.wordDisplay += model.word[i];
-        }
-    }
+      // for (let i = 0; i < model.word.length; i++) {
+      //   if (i < numLettersToHide) {
+      //   model.wordDisplay += "_";
+      //   } else {
+      //   model.wordDisplay += model.word[i];
+      //   }
+      // }
 
 
   
@@ -163,13 +163,40 @@ const GameController = (() => {
       updateWordDisplay();
       view.letterInput.value = "";
   
-      //console.log("Random word:", model.word);
+      console.log("Random word:", model.word);
       //console.log("Concealed word:", model.wordDisplay);
+    }
+
+    async function initializeRound() {
+      model.word = await getRandomWord();
+      model.wordDisplay = concealLetters(model.word);
+      //model.correctGuesses = 0;
+      model.incorrectGuesses = 0;
+      model.guessedLetters.clear();
+
+      const numLettersToHide = Math.floor(Math.random() * (model.word.length - 1)) + 1;
+
+      // for (let i = 0; i < model.word.length; i++) {
+      //   if (i < numLettersToHide) {
+      //   model.wordDisplay += "_";
+      //   } else {
+      //   model.wordDisplay += model.word[i];
+      //   }
+      // }
+
+
+  
+      updateGuessCounter();
+      updateWordDisplay();
+      view.letterInput.value = "";
+  
+      console.log("Random word:", model.word);
     }
 
     view.letterInput.addEventListener("keypress", async (event) => {
         if (event.key === "Enter") {
         const letter = view.letterInput.value;
+        //var correcttmp = 0;
 
         if (!model.guessedLetters.has(letter.toLowerCase())) {
             model.guessedLetters.add(letter.toLowerCase());
@@ -189,7 +216,12 @@ const GameController = (() => {
 
             if (model.wordDisplay === model.word) {
                 model.correctGuesses++;
-                await initializeGame();
+                //correcttmp++;
+                console.log(model.correctGuesses);
+                console.log(model.wordDisplay);
+
+                //await initializeGame();
+                await initializeRound();
             }
             } else {
             model.incorrectGuesses++;
@@ -208,6 +240,38 @@ const GameController = (() => {
         view.letterInput.value = "";
         }
     });
+
+    // function updateTimerDisplay() {
+    //   view.timerDisplay.textContent = model.timer;
+    // }
+  
+    // function addToGuessHistory(letter, isCorrect) {
+    //   const li = document.createElement("li");
+    //   li.textContent = letter;
+    //   li.classList.add("game__guess-history-item");
+    //   li.classList.add(isCorrect ? "correct-guess" : "incorrect-guess");
+    //   view.guessHistory.appendChild(li);
+    // }
+  
+    // function clearGuessHistory() {
+    //   view.guessHistory.innerHTML = "";
+    // }
+    
+    // let timerInterval;
+    // function startTimer() {
+    //   clearInterval(timerInterval);
+    //   model.timer = 60;
+    //   updateTimerDisplay();
+    //   timerInterval = setInterval(() => {
+    //     model.timer--;
+    //     updateTimerDisplay();
+    //     if (model.timer === 0 || model.incorrectGuesses === model.maxChances) {
+    //       clearInterval(timerInterval);
+    //       alert(`Time's up! You have guessed ${model.correctGuesses} words!`);
+    //       initializeGame();
+    //     }
+    //   }, 1000);
+    // }
     
 
     view.newGameBtn.addEventListener("click", async () => {
